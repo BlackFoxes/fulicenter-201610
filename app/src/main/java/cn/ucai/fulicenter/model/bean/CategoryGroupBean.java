@@ -1,15 +1,13 @@
 package cn.ucai.fulicenter.model.bean;
 
-/**
- * Created by clawpo on 2017/1/10.
- */
+import java.io.Serializable;
 
-public class CategoryGroupBean {
+public class CategoryGroupBean implements Serializable {
 
     /**
-     * id : 344
-     * name : 最IN
-     * imageUrl : muying/2.jpg
+     * id : 334
+     * name : 配饰
+     * imageUrl : muying/Jewelry.png
      */
 
     private int id;
