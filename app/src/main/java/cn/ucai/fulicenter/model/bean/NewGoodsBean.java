@@ -1,9 +1,29 @@
-package cn.ucai.fulicenter.model.bean.bean;
+package cn.ucai.fulicenter.model.bean;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
-public class GoodsDetailsBean implements Serializable {
+public class NewGoodsBean implements Serializable {
+
+    /**
+     * id : 1
+     * goodsId : 7672
+     * catId : 0
+     * goodsName : 趣味煮蛋模具
+     * goodsEnglishName : Kotobuki
+     * goodsBrief : 将煮好的鸡蛋…
+     * shopPrice : ￥110
+     * currencyPrice : ￥140
+     * promotePrice : ￥0
+     * rankPrice : ￥0
+     * promote : false
+     * goodsThumb : 201509/thumb_img/7672_thumb_G_14423845719.jpg
+     * goodsImg : 201509/goods_img/7672_P_1442389445199.jpg
+     * colorId : 4
+     * colorName : 绿色
+     * colorCode : #59d85c
+     * colorUrl : 1
+     * addTime : 1442389445    
+     */
 
     private int id;
     private int goodsId;
@@ -15,12 +35,14 @@ public class GoodsDetailsBean implements Serializable {
     private String currencyPrice;
     private String promotePrice;
     private String rankPrice;
+    private boolean isPromote;
     private String goodsThumb;
     private String goodsImg;
-    private long addTime;
-    private String shareUrl;
-    private boolean isPromote;
-    private PropertiesBean[] properties;
+    private int colorId;
+    private String colorName;
+    private String colorCode;
+    private String colorUrl;
+    private String addTime;
 
     public int getId() {
         return id;
@@ -102,6 +124,14 @@ public class GoodsDetailsBean implements Serializable {
         this.rankPrice = rankPrice;
     }
 
+    public boolean isPromote() {
+        return isPromote;
+    }
+
+    public void setPromote(boolean promote) {
+        this.isPromote = promote;
+    }
+
     public String getGoodsThumb() {
         return goodsThumb;
     }
@@ -118,41 +148,49 @@ public class GoodsDetailsBean implements Serializable {
         this.goodsImg = goodsImg;
     }
 
-    public long getAddTime() {
+    public int getColorId() {
+        return colorId;
+    }
+
+    public void setColorId(int colorId) {
+        this.colorId = colorId;
+    }
+
+    public String getColorName() {
+        return colorName;
+    }
+
+    public void setColorName(String colorName) {
+        this.colorName = colorName;
+    }
+
+    public String getColorCode() {
+        return colorCode;
+    }
+
+    public void setColorCode(String colorCode) {
+        this.colorCode = colorCode;
+    }
+
+    public String getColorUrl() {
+        return colorUrl;
+    }
+
+    public void setColorUrl(String colorUrl) {
+        this.colorUrl = colorUrl;
+    }
+
+    public String getAddTime() {
         return addTime;
     }
 
-    public void setAddTime(long addTime) {
+    public void setAddTime(String addTime) {
         this.addTime = addTime;
-    }
-
-    public String getShareUrl() {
-        return shareUrl;
-    }
-
-    public void setShareUrl(String shareUrl) {
-        this.shareUrl = shareUrl;
-    }
-
-    public boolean isPromote() {
-        return isPromote;
-    }
-
-    public void setPromote(boolean promote) {
-        this.isPromote = promote;
-    }
-
-    public PropertiesBean[] getProperties() {
-        return properties;
-    }
-
-    public void setProperties(PropertiesBean[] properties) {
-        this.properties = properties;
     }
 
     @Override
     public String toString() {
-        return "GoodDetailsBean{" +
+        return "NewGoodBean{" +
                 "id=" + id +
                 ", goodsId=" + goodsId +
                 ", catId=" + catId +
@@ -163,12 +201,14 @@ public class GoodsDetailsBean implements Serializable {
                 ", currencyPrice='" + currencyPrice + '\'' +
                 ", promotePrice='" + promotePrice + '\'' +
                 ", rankPrice='" + rankPrice + '\'' +
+                ", promote=" + isPromote +
                 ", goodsThumb='" + goodsThumb + '\'' +
                 ", goodsImg='" + goodsImg + '\'' +
-                ", addTime=" + addTime +
-                ", shareUrl='" + shareUrl + '\'' +
-                ", promote=" + isPromote +
-                ", properties=" + Arrays.toString(properties) +
+                ", colorId=" + colorId +
+                ", colorName='" + colorName + '\'' +
+                ", colorCode='" + colorCode + '\'' +
+                ", colorUrl='" + colorUrl + '\'' +
+                ", addTime='" + addTime + '\'' +
                 '}';
     }
 }
