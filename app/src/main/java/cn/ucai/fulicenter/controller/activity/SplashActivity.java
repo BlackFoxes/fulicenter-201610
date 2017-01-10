@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-import cn.ucai.fulicenter.MainActivity;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.view.MFGT;
 
