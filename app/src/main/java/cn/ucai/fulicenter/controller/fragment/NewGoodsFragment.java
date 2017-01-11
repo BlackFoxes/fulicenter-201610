@@ -21,8 +21,14 @@ import cn.ucai.fulicenter.model.bean.NewGoodsBean;
 import cn.ucai.fulicenter.model.net.IModelNewGoods;
 import cn.ucai.fulicenter.model.net.ModelNewGoods;
 import cn.ucai.fulicenter.model.net.OnCompleteListener;
+import cn.ucai.fulicenter.model.utils.CommonUtils;
 import cn.ucai.fulicenter.model.utils.ConvertUtils;
 import cn.ucai.fulicenter.model.utils.L;
+import cn.ucai.fulicenter.view.SpaceItemDecoration;
+
+import static cn.ucai.fulicenter.R.id.rv;
+import static cn.ucai.fulicenter.R.id.srl;
+import static cn.ucai.fulicenter.R.id.tv_refresh;
 
 /**
  * Created by clawpo on 2017/1/11.
@@ -31,11 +37,11 @@ import cn.ucai.fulicenter.model.utils.L;
 public class NewGoodsFragment extends Fragment {
     private static final String TAG = NewGoodsFragment.class.getSimpleName();
 
-    @BindView(R.id.tv_refresh)
+    @BindView(tv_refresh)
     TextView mTvRefresh;
-    @BindView(R.id.rv)
+    @BindView(rv)
     RecyclerView mRv;
-    @BindView(R.id.srl)
+    @BindView(srl)
     SwipeRefreshLayout mSrl;
 
     GridLayoutManager gm;
@@ -44,20 +50,34 @@ public class NewGoodsFragment extends Fragment {
     IModelNewGoods model;
     int pageId = 1;
 
-    private void initData() {
+    private void initData(final int action) {
         model.downData(getContext(), I.CAT_ID, pageId, new OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
-                L.e(TAG, "result.length=" + result.length);
-                if (result != null && result.length > 0) {
+                mSrl.setRefreshing(false);
+                mTvRefresh.setVisibility(View.GONE);
+                mAdapter.setMore(true);
+                if(result!=null && result.length>0){
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
-//                    mList.addAll(list);
-                    mAdapter.initData(list);
+                    if(action==I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
+                        mAdapter.initData(list);
+                    }else{
+                        mAdapter.addData(list);
+                    }
+                    if(list.size()<I.PAGE_SIZE_DEFAULT){
+                        mAdapter.setMore(false);
+                    }
+                }else{
+                    mAdapter.setMore(false);
                 }
             }
 
             @Override
             public void onError(String error) {
+                mSrl.setRefreshing(false);
+                mTvRefresh.setVisibility(View.GONE);
+                mAdapter.setMore(false);
+                CommonUtils.showShortToast(error);
                 L.e(TAG,"error="+error);
             }
         });
@@ -71,6 +91,7 @@ public class NewGoodsFragment extends Fragment {
                 getResources().getColor(R.color.google_yellow)
         );
         gm = new GridLayoutManager(getContext(), I.COLUM_NUM);
+        mRv.addItemDecoration(new SpaceItemDecoration(12));
         mRv.setLayoutManager(gm);
         mRv.setHasFixedSize(true);
         mAdapter = new GoodsAdapter(getContext(), mList);
@@ -83,7 +104,43 @@ public class NewGoodsFragment extends Fragment {
         ButterKnife.bind(this, layout);
         initView();
         model = new ModelNewGoods();
-        initData();
+        initData(I.ACTION_DOWNLOAD);
+        setPullUpListener();
+        setPullDownListener();
         return layout;
+    }
+
+    private void setPullDownListener() {
+        mSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSrl.setRefreshing(true);
+                mTvRefresh.setVisibility(View.VISIBLE);
+                pageId = 1;
+                initData(I.ACTION_PULL_DOWN);
+            }
+        });
+    }
+    private void setPullUpListener() {
+        mRv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastPosition = gm.findLastVisibleItemPosition();
+                if(newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastPosition == mAdapter.getItemCount()-1
+                        && mAdapter.isMore()){
+                    pageId++;
+                    initData(I.ACTION_PULL_UP);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstPosition = gm.findFirstVisibleItemPosition();
+                mSrl.setEnabled(firstPosition==0);
+            }
+        });
     }
 }

@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.model.bean.NewGoodsBean;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
+import cn.ucai.fulicenter.view.FooterViewHolder;
 
 /**
  * Created by clawpo on 2017/1/11.
@@ -31,39 +33,68 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         mList.addAll(list);
     }
 
+    public boolean isMore() {
+        return isMore;
+    }
+
+    public void setMore(boolean more) {
+        isMore = more;
+        notifyDataSetChanged();
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder =
-                new GoodsViewHolder(View.inflate(mContext, R.layout.item_goods, null));
+        RecyclerView.ViewHolder holder = null;
+        if (viewType == I.TYPE_FOOTER) {
+            holder = new FooterViewHolder(View.inflate(mContext, R.layout.item_footer, null));
+        } else {
+            holder = new GoodsViewHolder(View.inflate(mContext, R.layout.item_goods, null));
+        }
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        GoodsViewHolder vh = (GoodsViewHolder) holder;
-        ImageLoader.downloadImg(mContext,vh.mIvGoodsThumb,mList.get(position).getGoodsThumb());
+        if (getItemViewType(position)==I.TYPE_FOOTER){
+            FooterViewHolder vh = (FooterViewHolder) holder;
+            vh.setFooterString(mContext.getString(getFooterString()));
+        }else {
+            GoodsViewHolder vh = (GoodsViewHolder) holder;
+            ImageLoader.downloadImg(mContext, vh.mIvGoodsThumb, mList.get(position).getGoodsThumb());
 //        vh.mIvGoodsThumb.setImageResource(mList.get(position).getGoodsThumb());
-        vh.mTvGoodsName.setText(mList.get(position).getGoodsName());
-        vh.mTvGoodsPrice.setText(mList.get(position).getCurrencyPrice());
+            vh.mTvGoodsName.setText(mList.get(position).getGoodsName());
+            vh.mTvGoodsPrice.setText(mList.get(position).getCurrencyPrice());
+        }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == getItemCount() - 1) {
+            return I.TYPE_FOOTER;
+        }
+        return I.TYPE_ITEM;
+    }
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        return mList.size() + 1;
     }
 
     public void initData(ArrayList<NewGoodsBean> list) {
-        if (mList!=null){
+        if (mList != null) {
             mList.clear();
         }
         mList.addAll(list);
         notifyDataSetChanged();
     }
 
-    public void addData(ArrayList<NewGoodsBean> list){
+    public void addData(ArrayList<NewGoodsBean> list) {
         mList.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public int getFooterString() {
+        return isMore?R.string.load_more:R.string.no_more;
     }
 
     static class GoodsViewHolder extends RecyclerView.ViewHolder {
@@ -81,4 +112,5 @@ public class GoodsAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
     }
+
 }
