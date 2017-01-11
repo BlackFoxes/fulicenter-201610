@@ -23,6 +23,7 @@ import cn.ucai.fulicenter.model.utils.ImageLoader;
 public class GoodsAdapter extends RecyclerView.Adapter {
     Context mContext;
     ArrayList<NewGoodsBean> mList;
+    boolean isMore;
 
     public GoodsAdapter(Context context, ArrayList<NewGoodsBean> list) {
         mContext = context;
@@ -49,13 +50,18 @@ public class GoodsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mList.size();
     }
 
     public void initData(ArrayList<NewGoodsBean> list) {
         if (mList!=null){
             mList.clear();
         }
+        mList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    public void addData(ArrayList<NewGoodsBean> list){
         mList.addAll(list);
         notifyDataSetChanged();
     }
