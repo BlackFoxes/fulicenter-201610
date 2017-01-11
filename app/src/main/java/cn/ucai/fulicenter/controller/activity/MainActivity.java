@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         rbs[2] = mLayoutCategory;
         rbs[3] = mLayoutCart;
         rbs[4] = mLayoutPersonalCenter;
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container,new NewGoodsFragment())
+                .commit();
     }
 
     public void onCheckedChange(View view) {
