@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.controller.adapter.BoutiqueAdapter;
@@ -49,7 +50,8 @@ public class BoutiqueFragment extends Fragment {
     BoutiqueAdapter mAdapter;
     ArrayList<NewGoodsBean> mList = new ArrayList<>();
     IModelNewBoutique model;
-    int pageId = 1;
+    @BindView(R.id.tv_nomore)
+    TextView mTvNomore;
 
     private void initData(final int action) {
         model.downData(getContext(), new OnCompleteListener<BoutiqueBean[]>() {
@@ -57,19 +59,18 @@ public class BoutiqueFragment extends Fragment {
             public void onSuccess(BoutiqueBean[] result) {
                 mSrl.setRefreshing(false);
                 mTvRefresh.setVisibility(View.GONE);
-                mAdapter.setMore(true);
-                if(result!=null && result.length>0){
+                mSrl.setVisibility(View.VISIBLE);
+                mTvNomore.setVisibility(View.GONE);
+                if (result != null && result.length > 0) {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
-                    if(action==I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
+                    if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mAdapter.initData(list);
-                    }else{
+                    } else {
                         mAdapter.addData(list);
                     }
-                    if(list.size()<I.PAGE_SIZE_DEFAULT){
-                        mAdapter.setMore(false);
-                    }
-                }else{
-                    mAdapter.setMore(false);
+                } else {
+                    mSrl.setVisibility(View.GONE);
+                    mTvNomore.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -77,9 +78,10 @@ public class BoutiqueFragment extends Fragment {
             public void onError(String error) {
                 mSrl.setRefreshing(false);
                 mTvRefresh.setVisibility(View.GONE);
-                mAdapter.setMore(false);
+                mSrl.setVisibility(View.GONE);
+                mTvNomore.setVisibility(View.VISIBLE);
                 CommonUtils.showShortToast(error);
-                L.e(TAG,"error="+error);
+                L.e(TAG, "error=" + error);
             }
         });
     }
@@ -97,6 +99,8 @@ public class BoutiqueFragment extends Fragment {
         mRv.setHasFixedSize(true);
         mAdapter = new BoutiqueAdapter(getContext(), null);
         mRv.setAdapter(mAdapter);
+        mSrl.setVisibility(View.GONE);
+        mTvNomore.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -106,7 +110,6 @@ public class BoutiqueFragment extends Fragment {
         initView();
         model = new ModelBoutique();
         initData(I.ACTION_DOWNLOAD);
-        setPullUpListener();
         setPullDownListener();
         return layout;
     }
@@ -117,31 +120,13 @@ public class BoutiqueFragment extends Fragment {
             public void onRefresh() {
                 mSrl.setRefreshing(true);
                 mTvRefresh.setVisibility(View.VISIBLE);
-                pageId = 1;
                 initData(I.ACTION_PULL_DOWN);
             }
         });
     }
-    private void setPullUpListener() {
-        mRv.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                int lastPosition = gm.findLastVisibleItemPosition();
-                if(newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastPosition == mAdapter.getItemCount()-1
-                        && mAdapter.isMore()){
-                    pageId++;
-                    initData(I.ACTION_PULL_UP);
-                }
-            }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                int firstPosition = gm.findFirstVisibleItemPosition();
-                mSrl.setEnabled(firstPosition==0);
-            }
-        });
+    @OnClick(R.id.tv_nomore)
+    public void onClick() {
+        initData(I.ACTION_DOWNLOAD);
     }
 }

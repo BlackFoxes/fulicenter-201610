@@ -13,10 +13,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.model.bean.BoutiqueBean;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
-import cn.ucai.fulicenter.view.FooterViewHolder;
 
 /**
  * Created by clawpo on 2017/1/11.
@@ -25,7 +23,6 @@ import cn.ucai.fulicenter.view.FooterViewHolder;
 public class BoutiqueAdapter extends RecyclerView.Adapter {
     Context mContext;
     ArrayList<BoutiqueBean> mList;
-    boolean isMore;
 
     public BoutiqueAdapter(Context context, ArrayList<BoutiqueBean> list) {
         mContext = context;
@@ -35,51 +32,25 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public boolean isMore() {
-        return isMore;
-    }
-
-    public void setMore(boolean more) {
-        isMore = more;
-        notifyDataSetChanged();
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder = null;
-        if (viewType == I.TYPE_FOOTER) {
-            holder = new FooterViewHolder(View.inflate(mContext, R.layout.item_footer, null));
-        } else {
-            holder = new BoutiqueViewHolder(View.inflate(mContext, R.layout.item_boutique, null));
-        }
+        RecyclerView.ViewHolder holder =
+                new BoutiqueViewHolder(View.inflate(mContext, R.layout.item_boutique, null));
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == I.TYPE_FOOTER) {
-            FooterViewHolder vh = (FooterViewHolder) holder;
-            vh.setFooterString(mContext.getString(getFooterString()));
-        } else {
-            BoutiqueViewHolder vh = (BoutiqueViewHolder) holder;
-            ImageLoader.downloadImg(mContext, vh.mIvBoutiqueImg, mList.get(position).getImageurl());
-            vh.mTvBoutiqueName.setText(mList.get(position).getName());
-            vh.mTvBoutiqueTitle.setText(mList.get(position).getTitle());
-            vh.mTvBoutiqueDescription.setText(mList.get(position).getDescription());
-        }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position == getItemCount() - 1) {
-            return I.TYPE_FOOTER;
-        }
-        return I.TYPE_ITEM;
+        BoutiqueViewHolder vh = (BoutiqueViewHolder) holder;
+        ImageLoader.downloadImg(mContext, vh.mIvBoutiqueImg, mList.get(position).getImageurl());
+        vh.mTvBoutiqueName.setText(mList.get(position).getName());
+        vh.mTvBoutiqueTitle.setText(mList.get(position).getTitle());
+        vh.mTvBoutiqueDescription.setText(mList.get(position).getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return mList.size() + 1;
+        return mList.size();
     }
 
     public void initData(ArrayList<BoutiqueBean> list) {
@@ -92,10 +63,6 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
     public void addData(ArrayList<BoutiqueBean> list) {
         mList.addAll(list);
         notifyDataSetChanged();
-    }
-
-    public int getFooterString() {
-        return isMore ? R.string.load_more : R.string.no_more;
     }
 
 
