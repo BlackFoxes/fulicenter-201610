@@ -1,7 +1,6 @@
 package cn.ucai.fulicenter.controller.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +13,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.application.I;
-import cn.ucai.fulicenter.controller.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.model.bean.BoutiqueBean;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
+import cn.ucai.fulicenter.view.MFGT;
 
 /**
  * Created by clawpo on 2017/1/11.
@@ -52,9 +50,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         vh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext, BoutiqueChildActivity.class)
-                .putExtra(I.NewAndBoutiqueGoods.CAT_ID,mList.get(position).getId())
-                .putExtra(I.Boutique.NAME,mList.get(position).getTitle()));
+                MFGT.gotoBoutiqueChild(mContext,mList.get(position));
             }
         });
     }
