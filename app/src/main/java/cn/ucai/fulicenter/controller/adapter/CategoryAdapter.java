@@ -16,6 +16,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.model.bean.CategoryChildBean;
 import cn.ucai.fulicenter.model.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
+import cn.ucai.fulicenter.view.MFGT;
 
 /**
  * Created by clawpo on 2017/1/13.
@@ -92,7 +93,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isExpand, View view, ViewGroup viewGroup) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isExpand, View view, ViewGroup viewGroup) {
         ChildViewHolder vh = null;
         if (view==null){
             view = View.inflate(mContext,R.layout.item_category_child,null);
@@ -103,6 +104,12 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         }
         ImageLoader.downloadImg(mContext,vh.mIvCategoryChildThumb,getChild(groupPosition,childPosition).getImageUrl());
         vh.mTvCategoryChildName.setText(getChild(groupPosition,childPosition).getName());
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MFGT.gotoCategoryChild(mContext,mChildBeen.get(groupPosition).get(childPosition).getId());
+            }
+        });
         return view;
     }
 
