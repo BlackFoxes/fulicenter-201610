@@ -6,12 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.controller.fragment.NewGoodsFragment;
+import cn.ucai.fulicenter.model.bean.CategoryChildBean;
+import cn.ucai.fulicenter.view.CatFilterButton;
+import cn.ucai.fulicenter.view.MFGT;
 
 public class CategoryChildActivity extends AppCompatActivity {
 
@@ -22,6 +27,8 @@ public class CategoryChildActivity extends AppCompatActivity {
     Button mBtnSortPrice;
     @BindView(R.id.btn_sort_addtime)
     Button mBtnSortAddtime;
+    @BindView(R.id.cat_filter)
+    CatFilterButton mCatFilter;
 
 
     @Override
@@ -33,6 +40,9 @@ public class CategoryChildActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .commit();
+        String groupName = getIntent().getStringExtra(I.CategoryGroup.NAME);
+        ArrayList<CategoryChildBean> list = (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra(I.CategoryChild.DATA);
+        mCatFilter.initCatFileterButton(groupName, list);
     }
 
     @OnClick({R.id.btn_sort_price, R.id.btn_sort_addtime})
@@ -49,7 +59,7 @@ public class CategoryChildActivity extends AppCompatActivity {
                     right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
                 right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
-                mBtnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
+                mBtnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, right, null);
                 priceAsc = !priceAsc;
                 break;
             case R.id.btn_sort_addtime:
@@ -61,10 +71,15 @@ public class CategoryChildActivity extends AppCompatActivity {
                     right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
                 right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
-                mBtnSortAddtime.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
+                mBtnSortAddtime.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, right, null);
                 addTimeAsc = !addTimeAsc;
                 break;
         }
         mNewGoodsFragment.sortGoods(sortBy);
+    }
+
+    @OnClick(R.id.backClickArea)
+    public void onClick() {
+        MFGT.finish(this);
     }
 }
