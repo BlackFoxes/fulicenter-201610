@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(result!=null){
                         if (result.isRetMsg()){
                             User user = (User) result.getRetData();
-                            SharePrefrenceUtils.getInstance(LoginActivity.this).saveUser(user.getMuserName());
+                            SharePrefrenceUtils.getInstence(LoginActivity.this).saveUser(user.getMuserName());
                             FuLiCenterApplication.setUser(user);
                             MFGT.finish(LoginActivity.this);
                         }else{
