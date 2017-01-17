@@ -9,4 +9,5 @@ import android.content.Context;
 public interface IModelUser {
     void login(Context context, String username,String password, OnCompleteListener<String> listener);
     void register(Context context, String username, String usernick, String password, OnCompleteListener<String> listener);
+    void updatNick(Context context,String username,String usernick,OnCompleteListener<String> listener);
 }
