@@ -18,7 +18,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
+import cn.ucai.fulicenter.model.bean.MessageBean;
 import cn.ucai.fulicenter.model.bean.User;
+import cn.ucai.fulicenter.model.net.IModelUser;
+import cn.ucai.fulicenter.model.net.ModelUser;
+import cn.ucai.fulicenter.model.net.OnCompleteListener;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
 import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.view.MFGT;
@@ -36,6 +40,10 @@ public class PersonalFragment extends Fragment {
     @BindView(R.id.center_user_order_lis)
     GridView mCenterUserOrderLis;
 
+    IModelUser model;
+    @BindView(R.id.tv_collect_count)
+    TextView mTvCollectCount;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,8 +58,9 @@ public class PersonalFragment extends Fragment {
         User user = FuLiCenterApplication.getUser();
         if (user != null) {
             loadUserInfo(user);
+            getCollectCount();
         } else {
-            L.e(TAG,"initData,null user");
+            L.e(TAG, "initData,null user");
 //            MFGT.gotoLogin(getActivity());
         }
     }
@@ -66,6 +75,33 @@ public class PersonalFragment extends Fragment {
 //        ImageLoader.downloadImg(getContext(),mIvUserAvatar,user.getAvatarPath());
         ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), getContext(), mIvUserAvatar);
         mTvUserName.setText(user.getMuserNick());
+        loadCollectCount("0");
+    }
+
+    private void getCollectCount(){
+        model = new ModelUser();
+        model.collecCount(getContext(), FuLiCenterApplication.getUser().getMuserName(),
+                new OnCompleteListener<MessageBean>() {
+                    @Override
+                    public void onSuccess(MessageBean result) {
+                        L.e(TAG,"result="+result);
+                        if(result!=null && result.isSuccess()){
+                            loadCollectCount(result.getMsg());
+                        }else{
+                            loadCollectCount("0");
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        L.e(TAG,"error="+error);
+                        loadCollectCount("0");
+                    }
+                });
+    }
+
+    private void loadCollectCount(String count) {
+        mTvCollectCount.setText(String.valueOf(count));
     }
 
     @OnClick({R.id.tv_center_settings, R.id.center_user_info})

@@ -129,11 +129,13 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 
     @OnClick(R.id.iv_good_collect)
     public void setCollectListener(){
+        mIvGoodCollect.setEnabled(false);
         User user = FuLiCenterApplication.getUser();
         if (user != null) {
             setCollect(user);
         }else{
             MFGT.gotoLogin(this);
+            mIvGoodCollect.setEnabled(true);
         }
     }
 
@@ -152,6 +154,7 @@ public class GoodsDetailsActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(String error) {
+                        mIvGoodCollect.setEnabled(true);
 
                     }
                 });
@@ -163,9 +166,11 @@ public class GoodsDetailsActivity extends AppCompatActivity {
         }else{
             mIvGoodCollect.setImageResource(R.mipmap.bg_collect_in);
         }
+        mIvGoodCollect.setEnabled(true);
     }
 
     private void initCollectStatus() {
+        mIvGoodCollect.setEnabled(false);
         User user = FuLiCenterApplication.getUser();
         if (user != null) {
             model.isCollect(this, goodsId, user.getMuserName(), new OnCompleteListener<MessageBean>() {
