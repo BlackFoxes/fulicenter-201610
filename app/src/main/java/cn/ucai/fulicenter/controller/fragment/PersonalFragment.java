@@ -54,6 +54,12 @@ public class PersonalFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
+
     private void loadUserInfo(User user) {
 //        ImageLoader.downloadImg(getContext(),mIvUserAvatar,user.getAvatarPath());
         ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), getContext(), mIvUserAvatar);
