@@ -20,6 +20,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.model.bean.User;
 import cn.ucai.fulicenter.model.utils.ImageLoader;
+import cn.ucai.fulicenter.model.utils.L;
 import cn.ucai.fulicenter.view.MFGT;
 
 /**
@@ -50,7 +51,8 @@ public class PersonalFragment extends Fragment {
         if (user != null) {
             loadUserInfo(user);
         } else {
-            MFGT.gotoLogin(getActivity());
+            L.e(TAG,"initData,null user");
+//            MFGT.gotoLogin(getActivity());
         }
     }
 
