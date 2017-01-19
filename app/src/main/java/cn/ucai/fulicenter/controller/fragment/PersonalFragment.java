@@ -109,6 +109,10 @@ public class PersonalFragment extends Fragment {
         MFGT.gotoSettings(getActivity());
     }
 
+    @OnClick(R.id.layout_center_collect)
+    public void collects(){
+        MFGT.gotoCollects(getActivity());
+    }
 
     private void initOrderList() {
         ArrayList<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
