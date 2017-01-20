@@ -19,7 +19,6 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.I;
 import cn.ucai.fulicenter.controller.adapter.BoutiqueAdapter;
 import cn.ucai.fulicenter.model.bean.BoutiqueBean;
-import cn.ucai.fulicenter.model.bean.NewGoodsBean;
 import cn.ucai.fulicenter.model.net.IModelNewBoutique;
 import cn.ucai.fulicenter.model.net.ModelBoutique;
 import cn.ucai.fulicenter.model.net.OnCompleteListener;
@@ -48,7 +47,6 @@ public class BoutiqueFragment extends Fragment {
 
     LinearLayoutManager gm;
     BoutiqueAdapter mAdapter;
-    ArrayList<NewGoodsBean> mList = new ArrayList<>();
     IModelNewBoutique model;
     @BindView(R.id.tv_nomore)
     TextView mTvNomore;
@@ -97,7 +95,7 @@ public class BoutiqueFragment extends Fragment {
         mRv.addItemDecoration(new SpaceItemDecoration(12));
         mRv.setLayoutManager(gm);
         mRv.setHasFixedSize(true);
-        mAdapter = new BoutiqueAdapter(getContext(), null);
+        mAdapter = new BoutiqueAdapter(getContext(), new ArrayList<BoutiqueBean>());
         mRv.setAdapter(mAdapter);
         mSrl.setVisibility(View.GONE);
         mTvNomore.setVisibility(View.VISIBLE);

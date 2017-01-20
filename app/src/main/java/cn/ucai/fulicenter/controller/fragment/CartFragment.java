@@ -18,7 +18,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.application.I;
-import cn.ucai.fulicenter.controller.adapter.BoutiqueAdapter;
+import cn.ucai.fulicenter.controller.adapter.CartAdapter;
 import cn.ucai.fulicenter.model.bean.CartBean;
 import cn.ucai.fulicenter.model.bean.User;
 import cn.ucai.fulicenter.model.net.IModelUser;
@@ -48,7 +48,7 @@ public class CartFragment extends Fragment {
     SwipeRefreshLayout mSrl;
 
     LinearLayoutManager gm;
-    BoutiqueAdapter mAdapter;
+    CartAdapter mAdapter;
     IModelUser model;
     @BindView(R.id.tv_nothing)
     TextView mTvNomore;
@@ -67,9 +67,9 @@ public class CartFragment extends Fragment {
                         ArrayList<CartBean> list = ConvertUtils.array2List(result);
                         L.e(TAG,"list.size="+list.size());
                         if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
-//                            mAdapter.initData(list);
+                            mAdapter.initData(list);
                         } else {
-//                            mAdapter.addData(list);
+                            mAdapter.addData(list);
                         }
                     } else {
                         mSrl.setVisibility(View.GONE);
@@ -101,7 +101,7 @@ public class CartFragment extends Fragment {
         mRv.addItemDecoration(new SpaceItemDecoration(12));
         mRv.setLayoutManager(gm);
         mRv.setHasFixedSize(true);
-        mAdapter = new BoutiqueAdapter(getContext(), null);
+        mAdapter = new CartAdapter(getContext(), new ArrayList<CartBean>());
         mRv.setAdapter(mAdapter);
         mSrl.setVisibility(View.GONE);
         mTvNomore.setVisibility(View.VISIBLE);
