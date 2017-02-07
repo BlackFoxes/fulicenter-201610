@@ -42,7 +42,8 @@
         <activity android:name=".controller.activity.BoutiqueChildActivity"/>
         <activity android:name=".controller.activity.GoodsDetailsActivity"/>
         <activity android:name=".controller.activity.CategoryChildActivity"/>
-        <activity android:name=".controller.activity.LoginActivity"/>
+        <activity android:name=".controller.activity.Login_OActivity"/>
+        <activity android:name=".mvp.login.LoginActivity"/>
         <activity android:name=".controller.activity.RegisterActivity"/>
         <activity android:name=".controller.activity.SettingsActivity"/>
         <activity android:name=".controller.activity.UpdataNickActivity"/>

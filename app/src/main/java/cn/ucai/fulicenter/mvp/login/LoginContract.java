@@ -1,5 +1,7 @@
 package cn.ucai.fulicenter.mvp.login;
 
+import android.content.Context;
+
 import cn.ucai.fulicenter.mvp.BasePresenter;
 import cn.ucai.fulicenter.mvp.BaseView;
 
@@ -12,13 +14,14 @@ public interface LoginContract {
     interface View extends BaseView<Presenter>{
         void loginSuccess();
         void showError(String error);
+        void showError(int error);
         void loginFailByUserName();
         void loginFailByPassword();
         void showDialog();
-        void stopDialog();
+        void dismissDialog();
     }
 
     interface Presenter extends BasePresenter{
-        void login(String username,String password);
+        void login(Context context, String username, String password);
     }
 }

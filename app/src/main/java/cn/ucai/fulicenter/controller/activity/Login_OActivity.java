@@ -29,8 +29,8 @@ import cn.ucai.fulicenter.view.MFGT;
 /**
  * Created by clawpo on 2017/1/16.
  */
-public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = LoginActivity.class.getSimpleName();
+public class Login_OActivity extends AppCompatActivity {
+    private static final String TAG = Login_OActivity.class.getSimpleName();
     @BindView(R.id.username)
     EditText mUsername;
     @BindView(R.id.password)
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                 checkInput();
                 break;
             case R.id.btn_register:
-                MFGT.gotoRegister(this);
+//                MFGT.gotoRegister(this);
                 break;
         }
     }
@@ -90,10 +90,10 @@ public class LoginActivity extends AppCompatActivity {
                             boolean savaUser = UserDao.getInstance().savaUser(user);
                             L.e(TAG,"savaUser="+savaUser);
                             if (savaUser) {
-                                SharePrefrenceUtils.getInstence(LoginActivity.this).saveUser(user.getMuserName());
+                                SharePrefrenceUtils.getInstence(Login_OActivity.this).saveUser(user.getMuserName());
                                 FuLiCenterApplication.setUser(user);
                                 setResult(RESULT_OK);
-                                MFGT.finish(LoginActivity.this);
+                                MFGT.finish(Login_OActivity.this);
                             }
                         }else{
                             if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER){

@@ -12,13 +12,13 @@ import cn.ucai.fulicenter.controller.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.controller.activity.CategoryChildActivity;
 import cn.ucai.fulicenter.controller.activity.CollectsActivity;
 import cn.ucai.fulicenter.controller.activity.GoodsDetailsActivity;
-import cn.ucai.fulicenter.controller.activity.LoginActivity;
 import cn.ucai.fulicenter.controller.activity.OrderActivity;
 import cn.ucai.fulicenter.controller.activity.RegisterActivity;
 import cn.ucai.fulicenter.controller.activity.SettingsActivity;
 import cn.ucai.fulicenter.controller.activity.UpdataNickActivity;
 import cn.ucai.fulicenter.model.bean.BoutiqueBean;
 import cn.ucai.fulicenter.model.bean.CategoryChildBean;
+import cn.ucai.fulicenter.mvp.login.LoginActivity;
 
 /**
  * Created by clawpo on 2017/1/10.
